@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GTA VI Countdown — SoTyrion</title>
+<style>
+:root { --pink:#ff4f9a; --cyan:#50f6ee; --orange:#ffb45b; --white:#fff8f4; }
+* { box-sizing:border-box }
+html,body { margin:0; width:100%; height:100%; overflow:hidden; }
+body {
+  font-family: Arial, Helvetica, sans-serif; color:var(--white);
+  background:
+    radial-gradient(ellipse at 15% 80%, #b8336d55 0, transparent 35%),
+    radial-gradient(ellipse at 82% 20%, #ff9c3940 0, transparent 33%),
+    linear-gradient(135deg,#120b22 0%,#25102c 42%,#071c2b 100%);
+  display:flex; align-items:center; justify-content:center;
+}
+body:before {
+  content:""; position:absolute; inset:0;
+  background:repeating-linear-gradient(0deg,transparent 0 38px,#ff9bd00b 39px 40px),
+             repeating-linear-gradient(90deg,transparent 0 38px,#ff9bd00b 39px 40px);
+  mask-image:linear-gradient(to top,black,transparent 75%);
+}
+.sun {
+  position:absolute; width:min(42vw,390px); aspect-ratio:1; border-radius:50%;
+  top:5%; left:50%; transform:translateX(-50%);
+  background:linear-gradient(180deg,#ffd06b 0%,#ff7d91 48%,#e53c91 100%);
+  box-shadow:0 0 80px #ff4f9a35; overflow:hidden; opacity:.78;
+}
+.sun:after {
+  content:""; position:absolute; inset:48% -5% -5%;
+  background:repeating-linear-gradient(to bottom,#28102b 0 7px,transparent 8px 17px);
+}
+.palm { position:absolute; bottom:10%; width:22%; height:62%; opacity:.42; }
+.palm.left { left:-1%; transform:rotate(-5deg); }
+.palm.right { right:-1%; transform:scaleX(-1) rotate(-5deg); }
+.palm:before { content:""; position:absolute; bottom:0; left:48%; width:9px; height:80%; background:#080d20; transform:rotate(7deg); border-radius:9px; }
+.palm:after {
+ content:""; position:absolute; left:8%; top:0; width:90%; height:32%;
+ background:#080d20; clip-path:polygon(50% 50%,0 20%,42% 45%,8% 0,48% 38%,35% 0,55% 38%,85% 3%,62% 45%,100% 20%,65% 58%);
+}
+.content { position:relative; z-index:2; width:100%; padding:3vw; text-align:center; }
+.kicker { letter-spacing:.32em; font-weight:800; font-size:clamp(12px,1.7vw,22px); color:var(--cyan); text-shadow:0 0 14px #50f6ee77; }
+h1 { margin:.3em 0 0; font-size:clamp(34px,7vw,92px); line-height:.9; letter-spacing:-.04em; font-weight:1000; text-transform:uppercase; text-shadow:4px 4px 0 #e53c91,0 0 35px #ff4f9a55; }
+h1 span { color:var(--orange); }
+.subtitle { margin:1.2em 0 1.5em; font-size:clamp(12px,1.5vw,20px); letter-spacing:.22em; color:#ffe8f4; }
+.timer { display:flex; justify-content:center; gap:clamp(7px,1.8vw,22px); margin:0 auto; max-width:1100px; }
+.unit { min-width:0; flex:1; max-width:210px; padding:clamp(10px,2vw,24px) 5px; border:1px solid #ff91c677; background:#120b22b8; box-shadow:0 0 28px #ff4f9a17,inset 0 0 20px #50f6ee0a; backdrop-filter:blur(8px); }
+.num { font-variant-numeric:tabular-nums; font-size:clamp(27px,6.3vw,82px); font-weight:900; line-height:1; color:white; text-shadow:0 0 18px #ff4f9a66; }
+.label { margin-top:10px; font-size:clamp(9px,1.2vw,15px); letter-spacing:.22em; color:var(--cyan); }
+.footer { margin-top:clamp(22px,4vw,46px); font-size:clamp(10px,1.3vw,16px); letter-spacing:.18em; color:#ffe4ee; }
+.footer b { color:var(--orange); }
+.brand { position:absolute; bottom:3%; right:3%; z-index:3; font-size:clamp(10px,1.1vw,14px); letter-spacing:.12em; color:#ffffffb8; }
+@media (max-aspect-ratio: 1/1) { .sun { width:60vw; top:13%; } .content { padding:4vw; } }
+</style>
+</head>
+<body>
+<div class="sun"></div><div class="palm left"></div><div class="palm right"></div>
+<main class="content">
+  <div class="kicker">THE WAIT IS ALMOST OVER</div>
+  <h1>GRAND THEFT<br><span>AUTO VI</span></h1>
+  <div class="subtitle">VICE CITY • LEONIDA • NOVEMBER 19, 2026</div>
+  <section class="timer" aria-label="Countdown">
+    <div class="unit"><div class="num" id="days">000</div><div class="label">DAYS</div></div>
+    <div class="unit"><div class="num" id="hours">00</div><div class="label">HOURS</div></div>
+    <div class="unit"><div class="num" id="minutes">00</div><div class="label">MINUTES</div></div>
+    <div class="unit"><div class="num" id="seconds">00</div><div class="label">SECONDS</div></div>
+  </section>
+  <div class="footer" id="status">COUNTING DOWN TO RELEASE • <b>STAY TUNED</b></div>
+</main>
+<div class="brand">FAN-MADE COUNTDOWN • SOTYRION</div>
+<script>
+const target = new Date('2026-11-19T00:00:00+02:00').getTime();
+const $ = id => document.getElementById(id);
+function update() {
+  let remaining = Math.max(0, target - Date.now());
+  const days = Math.floor(remaining / 86400000); remaining %= 86400000;
+  const hours = Math.floor(remaining / 3600000); remaining %= 3600000;
+  const minutes = Math.floor(remaining / 60000); remaining %= 60000;
+  const seconds = Math.floor(remaining / 1000);
+  $('days').textContent = String(days).padStart(3,'0');
+  $('hours').textContent = String(hours).padStart(2,'0');
+  $('minutes').textContent = String(minutes).padStart(2,'0');
+  $('seconds').textContent = String(seconds).padStart(2,'0');
+  if (target - Date.now() <= 0) $('status').innerHTML = 'IT’S TIME • <b>WELCOME TO LEONIDA</b>';
+}
+update(); setInterval(update,1000);
+</script>
+</body>
+</html>
